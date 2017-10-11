@@ -1,0 +1,22 @@
+{
+    "dependencies": {
+        "github.com/go-sql-driver/mysql": {
+            "branch": "master"
+        },
+        "github.com/gorilla/mux": {
+            "branch": "master"
+        },
+        "github.com/jcorral/golang-custom-handler": {
+            "branch": "master"
+        },
+        "github.com/xeipuuv/gojsonschema": {
+            "branch": "master"
+        },
+        "gopkg.in/DATA-DOG/go-sqlmock.v1": {
+            "version": "^1.2.0"
+        },
+        "gopkg.in/yaml.v2": {
+            "branch": "v2"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: data-royale-core-api-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: data-royale-core-api
+    spec:
+      containers:
+      - name: data-royale-core-api
+        image: jcorral/data-royale-core-api:latest
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: dockerhub-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-royale-core-api-service
+  labels:
+    app: data-royale-core-api
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: data-royale-core-api

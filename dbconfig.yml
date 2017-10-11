@@ -1,0 +1,10 @@
+development:
+  dialect: mysql
+  datasource: artworks-dev-user:artworks-dev-pass@/mariadb?parseTime=true
+  dir: data/migrations/mariadb
+  table: migrations
+preproduction:
+  dialect: mysql
+  datasource: artworks:aY;E/^qj(dyc];y))!7q@tcp(localhost:3306)/artworks?parseTime=true
+  dir: data/migrations/mariadb
+  table: migrations
