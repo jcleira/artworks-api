@@ -55,9 +55,73 @@ type Client struct {
 // ArtworksController interface define the required methods to implement
 // in order to be able to manage Artworks.
 type ArtworksController interface {
+	GetArtwork(int) (*Artwork, error)
 	GetArtworks() ([]Artwork, error)
 	AddUpdateArtwork(string, *Artwork) error
 	DeleteArtwork(int) error
+}
+
+// GetArtwork returns an Artwork (by it's id) stored in the database.
+//
+// id - The Artwork id to query on the database.
+//
+// Returns:
+// An Artworks.
+// An error otherwise.
+func (c *Client) GetArtwork(id int) (*Artwork, error) {
+	stmt, err := c.DB.Prepare("SELECT * FROM artworks WHERE id=$1")
+	if err != nil {
+		return nil, fmt.Errorf("Unable to prepare the artwork's query table. Err: %s", err)
+	}
+
+	rows, err := stmt.Query(id)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to query the artworks table. Err: %s", err)
+	}
+
+	defer rows.Close()
+
+	var artwork Artwork
+
+	if rows.Next() {
+		err := rows.Scan(
+			&artwork.ID,
+			&artwork.Rei,
+			&artwork.CreatedAt,
+			&artwork.Ubi,
+			&artwork.Pro,
+			&artwork.Adq,
+			&artwork.Reg,
+			&artwork.Nom,
+			&artwork.Tit,
+			&artwork.Aut,
+			&artwork.Fec,
+			&artwork.Lug,
+			&artwork.Ico,
+			&artwork.Icc,
+			&artwork.Tip,
+			&artwork.Tec,
+			&artwork.Sop,
+			&artwork.Mat,
+			&artwork.Tin,
+			&artwork.Dim,
+			&artwork.Hue,
+			&artwork.Ins,
+			&artwork.Des,
+			&artwork.Est,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("Unable to map an Artwork data row. Err: %s", err)
+		}
+	} else {
+		return nil, fmt.Errorf("Unable to find an Artwork with id: %d", id)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("Unable to iterate on Artworks data. Err %s", err)
+	}
+
+	return &artwork, nil
 }
 
 // GetArtworks returns all the Artworks stored in the database, it may become

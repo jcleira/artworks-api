@@ -2,13 +2,23 @@ package artworks
 
 import "fmt"
 
-// FakeClient implements the SnapshotController interface, as the 'real'
-// players.Client struct. It has been created for testing purposes.
+// FakeClient implements the ArtworksController interface, as the 'real'
+// artworks.Client struct. It has been created for testing purposes.
 type FakeClient struct{}
 
-// GetArtworks return an array of mocked Snapshots if a valid date has been
+// GetArtwork returns a mocked Artwork if a valid date has been
 // given.
-func (tc *FakeClient) GetArtworks(date int64) ([]Artwork, error) {
+func (tc *FakeClient) GetArtwork(id int64) (Artwork, error) {
+	return Artwork{
+		ID:        1,
+		Rei:       "#EU82REE",
+		CreatedAt: 1489140631,
+	}, nil
+}
+
+// GetArtworks return an array of mocked Artwork if a valid date has been
+// given.
+func (tc *FakeClient) GetArtworks() ([]Artwork, error) {
 	return []Artwork{
 		{
 			ID: 1, Rei: "#EU82REE", CreatedAt: 1489140631,

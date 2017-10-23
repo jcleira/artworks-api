@@ -27,6 +27,7 @@ func ConfigureHandlers(r *mux.Router, db *sql.DB) {
 
 	r.Handle("/artworks", GetArtworksHandler(artworksClient)).Methods("GET")
 	r.Handle("/artworks", AddArtworkHandler(artworksClient)).Methods("PUT", "OPTIONS")
+	r.Handle("/artworks/{id:[0-9]+}", GetArtworkHandler(artworksClient)).Methods("GET")
 	r.Handle("/artworks/{id:[0-9]+}", UpdateArtworkHandler(artworksClient)).Methods("PUT")
 	r.Handle("/artworks/{id:[0-9]+}", DeleteArtworkHandler(artworksClient)).Methods("DELETE")
 }
@@ -93,6 +94,44 @@ func AddArtworkHandler(artworksClient ArtworksController) handler.CustomHandler 
 		}
 
 		w.WriteHeader(http.StatusCreated)
+
+		json.NewEncoder(w).Encode(artwork)
+		return nil
+	}
+}
+
+// GetArtworkHandler provides a HTTP endpoint to fetch a single Artwork.
+//
+// Response example:
+// {
+//   ID: 1,
+//   Rei: '#elle',
+//   CreatedAt: 1489140631,
+//   Pro: 'Ayuntamiento de Mahón',
+//   Ubi: 'Desconocido',
+//   ...
+//   Tecnica: '',
+// }
+//
+// artworksClient : The Artworks client either real or fake that implements the
+//		  						 ArtworksController interface, a fake artworks client is used
+//      						 for testing purposes.
+//
+// Returns a CustomHander ready to be added to a HTTP server / router.
+func GetArtworkHandler(artworksClient ArtworksController) handler.CustomHandler {
+	return func(w http.ResponseWriter, r *http.Request) *handler.HTTPError {
+		urlID, err := strconv.Atoi(mux.Vars(r)["id"])
+		if err != nil {
+			return &handler.HTTPError{
+				errors.New("Unable to update Artwork URL ID mismatch body artwork ID"),
+				http.StatusBadRequest,
+			}
+		}
+
+		artwork, err := artworksClient.GetArtwork(urlID)
+		if err != nil {
+			return &handler.HTTPError{err, http.StatusInternalServerError}
+		}
 
 		json.NewEncoder(w).Encode(artwork)
 		return nil
