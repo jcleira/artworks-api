@@ -28,7 +28,7 @@ func ConfigureHandlers(r *mux.Router, db *sql.DB) {
 	r.Handle("/artworks", GetArtworksHandler(artworksClient)).Methods("GET")
 	r.Handle("/artworks", AddArtworkHandler(artworksClient)).Methods("PUT", "OPTIONS")
 	r.Handle("/artworks/{id:[0-9]+}", GetArtworkHandler(artworksClient)).Methods("GET")
-	r.Handle("/artworks/{id:[0-9]+}", UpdateArtworkHandler(artworksClient)).Methods("PUT")
+	r.Handle("/artworks/{id:[0-9]+}", UpdateArtworkHandler(artworksClient)).Methods("PUT", "OPTIONS")
 	r.Handle("/artworks/{id:[0-9]+}", DeleteArtworkHandler(artworksClient)).Methods("DELETE")
 }
 
