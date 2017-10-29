@@ -1,13 +1,12 @@
-FROM scratch
+FROM debian
 LABEL maintainer "jmc.leira@gmail.com"
 
 # Adding application minimum runtime files
 # artworks-api - service binary
 # dbconfig.yml - database connection settings
-WORKDIR /app
 
-ADD artworks-api /app/
-ADD dbconfig.yml /app/
+ADD artworks-api .
+ADD dbconfig.yml .
 
 # TODO - this Dockefile has the environment hardcoded to preproduction
 ENTRYPOINT ["./artworks-api", "-environment", "preproduction"]
