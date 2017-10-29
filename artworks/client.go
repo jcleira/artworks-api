@@ -69,12 +69,7 @@ type ArtworksController interface {
 // An Artworks.
 // An error otherwise.
 func (c *Client) GetArtwork(id int) (*Artwork, error) {
-	stmt, err := c.DB.Prepare("SELECT * FROM artworks WHERE id=$1")
-	if err != nil {
-		return nil, fmt.Errorf("Unable to prepare the artwork's query table. Err: %s", err)
-	}
-
-	rows, err := stmt.Query(id)
+	rows, err := c.DB.Query("SELECT * FROM artworks WHERE id=?", id)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to query the artworks table. Err: %s", err)
 	}
