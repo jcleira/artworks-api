@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/jcleira/golang-custom-handler/handler"
+	"github.com/jcleira/handler/handler"
 )
 
 // ConfigureHandlers is meant to be called by the server.go main routine.

@@ -32,7 +32,6 @@ type Artwork struct {
 	Fec       string `json:"fec"`
 	Lug       string `json:"lug"`
 	Ico       string `json:"ico"`
-	Icc       string `json:"icc"`
 	Tip       string `json:"tip"`
 	Tec       string `json:"tec"`
 	Sop       string `json:"sop"`
@@ -43,6 +42,9 @@ type Artwork struct {
 	Ins       string `json:"ins"`
 	Des       string `json:"des"`
 	Est       string `json:"est"`
+	Uso       string `json:"uso"`
+	Prp       string `json:"prp"`
+	Vap       string `json:"vap"`
 }
 
 // Client is the Artworks struct that implements the ArtworksController
@@ -93,7 +95,6 @@ func (c *Client) GetArtwork(id int) (*Artwork, error) {
 			&artwork.Fec,
 			&artwork.Lug,
 			&artwork.Ico,
-			&artwork.Icc,
 			&artwork.Tip,
 			&artwork.Tec,
 			&artwork.Sop,
@@ -104,6 +105,9 @@ func (c *Client) GetArtwork(id int) (*Artwork, error) {
 			&artwork.Ins,
 			&artwork.Des,
 			&artwork.Est,
+			&artwork.Uso,
+			&artwork.Prp,
+			&artwork.Vap,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("Unable to map an Artwork data row. Err: %s", err)
@@ -151,7 +155,6 @@ func (c *Client) GetArtworks() ([]Artwork, error) {
 			&artwork.Fec,
 			&artwork.Lug,
 			&artwork.Ico,
-			&artwork.Icc,
 			&artwork.Tip,
 			&artwork.Tec,
 			&artwork.Sop,
@@ -162,6 +165,9 @@ func (c *Client) GetArtworks() ([]Artwork, error) {
 			&artwork.Ins,
 			&artwork.Des,
 			&artwork.Est,
+			&artwork.Uso,
+			&artwork.Prp,
+			&artwork.Vap,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("Unable to map an Artwork data row. Err: %s", err)
@@ -197,16 +203,16 @@ func (c *Client) AddUpdateArtwork(action string, artwork *Artwork) error {
 	case "INSERT":
 		sqlStatement = fmt.Sprint(
 			"INSERT INTO artworks",
-			"(rei,ubi,pro,adq,reg,nom,tit,aut,fec,lug,ico,icc,tip,tec,sop,mat,tin,dim,hue,ins,des,est,created_at) ",
-			"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+			"(rei,ubi,pro,adq,reg,nom,tit,aut,fec,lug,ico,tip,tec,sop,mat,tin,dim,hue,ins,des,est,uso,prp,vap,created_at) ",
+			"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 		break
 	case "UPDATE":
 		sqlStatement = fmt.Sprint(
 			"UPDATE artworks SET ",
 			"rei=?,ubi=?,pro=?,",
 			"adq=?,reg=?,nom=?,tit=?,aut=?,fec=?,lug=?,ico=?,",
-			"icc=?,tip=?,tec=?,sop=?,mat=?,tin=?,dim=?,hue=?,",
-			"ins=?,des=?,est=? ",
+			"tip=?,tec=?,sop=?,mat=?,tin=?,dim=?,hue=?,ins=?,",
+			"des=?,est=?,uso=?,prp=?,vap=? ",
 			"WHERE id=?")
 		break
 	default:
@@ -230,7 +236,6 @@ func (c *Client) AddUpdateArtwork(action string, artwork *Artwork) error {
 		artwork.Fec,
 		artwork.Lug,
 		artwork.Ico,
-		artwork.Icc,
 		artwork.Tip,
 		artwork.Tec,
 		artwork.Sop,
@@ -241,6 +246,9 @@ func (c *Client) AddUpdateArtwork(action string, artwork *Artwork) error {
 		artwork.Ins,
 		artwork.Des,
 		artwork.Est,
+		artwork.Uso,
+		artwork.Prp,
+		artwork.Vap,
 	}
 
 	if action == "INSERT" {
